@@ -1,0 +1,65 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header d-flex">
+                <a th:href="@{/user/agent/my/profile(agentId=${G_PAGE_OBJECT.agent.userId})}">
+                    <i class="text-muted mr-auto fas fa-chevron-left"></i>
+                    <span class="ml-2 text-muted">写真変更</span>
+                </a>
+            </div>
+            <div class="card-body">
+                <div><img id="user-image-cropper" style="display: block;max-width: 100%;" th:src="${G_PAGE_OBJECT.templateUserImage}"></div>
+                <button class="mt-3 btn btn-primary shadow-sm" onclick="cropImage()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="user-image-avater-form" class="d-none" method="POST" action="/user/agent/my/profile/avater/image-crop">
+    <th:block th:if="${_csrf} != null">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+        <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+    </th:block>
+    <th:block th:if="${_csrf} == null">
+        <input type="hidden" name="_csrf" value="_csrf"/>
+        <input type="hidden" name="_csrf_header" value="_csrf_header"/>
+    </th:block>
+    <input type="hidden" name="image"  th:value="${G_PAGE_OBJECT.templateUserImage}">
+    <input type="hidden" name="x"      id="user-image-x">
+    <input type="hidden" name="y"      id="user-image-y">
+    <input type="hidden" name="width"  id="user-image-width">
+    <input type="hidden" name="height" id="user-image-height">
+    <input type="hidden" name="rotate" id="user-image-rotate">
+    <input type="hidden" name="scaleX" id="user-image-scaleX">
+    <input type="hidden" name="scaleY" id="user-image-scaleY">
+
+</form>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.9/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.9/cropper.min.js"></script>
+<script>
+const image = document.getElementById('user-image-cropper');
+const cropper = new Cropper(image, {
+    aspectRatio: 1.0,
+    crop(event) {
+        document.getElementById('user-image-x').value      = Math.round(event.detail.x);
+        document.getElementById('user-image-y').value      = Math.round(event.detail.y);
+        document.getElementById('user-image-width').value  = Math.round(event.detail.width);
+        document.getElementById('user-image-height').value = Math.round(event.detail.height);
+        document.getElementById('user-image-rotate').value = event.detail.rotate;
+        document.getElementById('user-image-scaleX').value = event.detail.scaleX;
+        document.getElementById('user-image-scaleY').value = event.detail.scaleY;
+
+        console.log(event.detail.x);
+        console.log(event.detail.y);
+        console.log(event.detail.width);
+        console.log(event.detail.height);
+        console.log(event.detail.rotate);
+        console.log(event.detail.scaleX);
+        console.log(event.detail.scaleY);
+    },
+});
+
+var cropImage = function() {
+
+    document.getElementById('user-image-avater-form').submit();
+}
+</script>

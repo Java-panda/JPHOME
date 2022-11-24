@@ -1,0 +1,51 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-img"></div>
+            <div class="card-body">
+                <img class="mb-2" style="width:80px;height:80px;border-radius: 50%;" th:src="${G_PAGE_OBJECT.userOverview.userImage}">
+                <h5 class=""><span th:text="${G_PAGE_OBJECT.userOverview.userName}">PEOPLE</span><small class="text-muted"></small></h5>
+            </div>
+            <!--
+            <div class="card-body px-0 border-top">
+                <div class="text-center d-flex">
+                    <div style="width: calc(99.5% / 2);" class="position-relative">
+                        <i class="fas fa-bookmark text-primary" style="font-size: 24px;"></i>
+                        <p class="small text-muted mb-0 mt-2">紹介中：1,000</p>
+                        <a href="/agent/discover?agentId=1" class="stretched-link"></a>
+                    </div>
+                    <div style="width: calc(99.5% / 2);" class="position-relative border-left">
+                        <i class="fa fa-home text-danger" style="font-size: 24px;"></i>
+                        <p class="small text-muted mb-0 mt-2">物件数：69</p>
+                        <a href="/agent/discover?agentId=1" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            -->
+        </div>
+        <p class="text-muted mb-2 px-2">連絡情報</p>
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body border-bottom">
+                <div class="d-flex">
+                    <span>電話番号:  <a th:text="${G_PAGE_OBJECT.telNo}" th:href="${'tel:' + G_PAGE_OBJECT.telNo}">080-0000-0000</a></span>
+                </div>
+            </div>
+        </div>
+        <th:block th:if="${G_PAGE_OBJECT.userSocial} != null">
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-body border-bottom">
+                    <div class="d-flex">
+                        <img class="w-100 h-100" th:src="${G_PAGE_OBJECT.userSocial.wechatQrCode}">
+                    </div>
+                </div>
+            </div>
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-body border-bottom">
+                    <div class="d-flex">
+                        <img class="w-100 h-100" th:src="${G_PAGE_OBJECT.userSocial.lineQrCode}">
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jphome.system.mapper.SharehouseMapper">
+    
+    <resultMap type="Sharehouse" id="SharehouseResult">
+        <result property="sharehouseId"    column="sharehouse_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="sharehouseName"    column="sharehouse_name"    />
+        <result property="sharehouseImage"    column="sharehouse_image"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="postalCode"    column="postal_code"    />
+        <result property="address01"    column="address01"    />
+        <result property="address02"    column="address02"    />
+        <result property="address03"    column="address03"    />
+        <result property="address04"    column="address04"    />
+        <result property="route01"    column="route01"    />
+        <result property="station01"    column="station01"    />
+        <result property="walking01"    column="walking01"    />
+        <result property="route02"    column="route02"    />
+        <result property="station02"    column="station02"    />
+        <result property="walking02"    column="walking02"    />
+        <result property="womenOnly"    column="women_only"    />
+        <result property="foreignersAccept"    column="foreigners_accept"    />
+        <result property="englishSupport"    column="english_support"    />
+        <result property="japaneseSupport"    column="japanese_support"    />
+        <result property="chineseSupport"    column="chinese_support"    />
+        <result property="vietnameseSupport"    column="vietnamese_support"    />
+        <result property="koreanSupport"    column="korean_support"    />
+        <result property="conditions"    column="conditions"    />
+        <result property="sortOrder"    column="sort_order"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap id="SharehouseSharehouseRoomResult" type="Sharehouse" extends="SharehouseResult">
+        <collection property="sharehouseRoomList" notNullColumn="sub_sharehouse_id" javaType="java.util.List" resultMap="SharehouseRoomResult" />
+    </resultMap>
+
+    <resultMap type="SharehouseRoom" id="SharehouseRoomResult">
+        <result property="sharehouseId"    column="sub_sharehouse_id"    />
+        <result property="sharehouseRoomId"    column="sub_sharehouse_room_id"    />
+        <result property="sharehouseRoomName"    column="sub_sharehouse_room_name"    />
+        <result property="sharehouseRoomImage"    column="sub_sharehouse_room_image"    />
+        <result property="successReward"    column="sub_success_reward"    />
+        <result property="roomArea"    column="sub_room_area"    />
+        <result property="numPeoples"    column="sub_num_peoples"    />
+        <result property="hasWaterFee"    column="sub_has_water_fee"    />
+        <result property="hasGasFee"    column="sub_has_gas_fee"    />
+        <result property="hasElectFee"    column="sub_has_elect_fee"    />
+        <result property="hasWifiFee"    column="sub_has_wifi_fee"    />
+        <result property="hasRoomKey"    column="sub_has_room_key"    />
+        <result property="hasBed"    column="sub_has_bed"    />
+        <result property="hasDesk"    column="sub_has_desk"    />
+        <result property="hasChair"    column="sub_has_chair"    />
+        <result property="hasStorage"    column="sub_has_storage"    />
+        <result property="hasAirCon"    column="sub_has_air_con"    />
+        <result property="hasRefrigerator"    column="sub_has_refrigerator"    />
+        <result property="hasTv"    column="sub_has_tv"    />
+        <result property="cornerRoom"    column="sub_corner_room"    />
+        <result property="sunnyRoom"    column="sub_sunny_room"    />
+        <result property="otherTerms"    column="sub_other_terms"    />
+        <result property="delFlag"    column="sub_del_flag"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+    </resultMap>
+
+    <sql id="selectSharehouseVo">
+        select sharehouse_id, user_id, sharehouse_name, sharehouse_image, longitude, latitude, postal_code, address01, address02, address03, address04, route01, station01, walking01, route02, station02, walking02, women_only, foreigners_accept, english_support, japanese_support, chinese_support, vietnamese_support, korean_support, conditions, sort_order, del_flag, create_by, create_time, update_by, update_time from jh_sharehouse
+    </sql>
+
+    <select id="selectSharehouseList" parameterType="Sharehouse" resultMap="SharehouseResult">
+        <include refid="selectSharehouseVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="sharehouseName != null  and sharehouseName != ''"> and sharehouse_name like concat('%', #{sharehouseName}, '%')</if>
+            <if test="sharehouseImage != null  and sharehouseImage != ''"> and sharehouse_image = #{sharehouseImage}</if>
+            <if test="longitude != null "> and longitude = #{longitude}</if>
+            <if test="latitude != null "> and latitude = #{latitude}</if>
+            <if test="postalCode != null  and postalCode != ''"> and postal_code = #{postalCode}</if>
+            <if test="address01 != null  and address01 != ''"> and address01 = #{address01}</if>
+            <if test="address02 != null  and address02 != ''"> and address02 = #{address02}</if>
+            <if test="address03 != null  and address03 != ''"> and address03 = #{address03}</if>
+            <if test="address04 != null  and address04 != ''"> and address04 = #{address04}</if>
+            <if test="route01 != null  and route01 != ''"> and route01 = #{route01}</if>
+            <if test="station01 != null  and station01 != ''"> and station01 = #{station01}</if>
+            <if test="walking01 != null "> and walking01 = #{walking01}</if>
+            <if test="route02 != null  and route02 != ''"> and route02 = #{route02}</if>
+            <if test="station02 != null  and station02 != ''"> and station02 = #{station02}</if>
+            <if test="walking02 != null "> and walking02 = #{walking02}</if>
+            <if test="womenOnly != null "> and women_only = #{womenOnly}</if>
+            <if test="foreignersAccept != null "> and foreigners_accept = #{foreignersAccept}</if>
+            <if test="englishSupport != null "> and english_support = #{englishSupport}</if>
+            <if test="japaneseSupport != null "> and japanese_support = #{japaneseSupport}</if>
+            <if test="chineseSupport != null "> and chinese_support = #{chineseSupport}</if>
+            <if test="vietnameseSupport != null "> and vietnamese_support = #{vietnameseSupport}</if>
+            <if test="koreanSupport != null "> and korean_support = #{koreanSupport}</if>
+            <if test="conditions != null  and conditions != ''"> and conditions = #{conditions}</if>
+            <if test="sortOrder != null "> and sort_order = #{sortOrder}</if>
+        </where>
+    </select>
+    
+    <select id="selectSharehouseBySharehouseId" parameterType="Long" resultMap="SharehouseSharehouseRoomResult">
+        select a.sharehouse_id, a.user_id, a.sharehouse_name, a.sharehouse_image, a.longitude, a.latitude, a.postal_code, a.address01, a.address02, a.address03, a.address04, a.route01, a.station01, a.walking01, a.route02, a.station02, a.walking02, a.women_only, a.foreigners_accept, a.english_support, a.japanese_support, a.chinese_support, a.vietnamese_support, a.korean_support, a.conditions, a.sort_order, a.del_flag, a.create_by, a.create_time, a.update_by, a.update_time,
+ b.sharehouse_id as sub_sharehouse_id, b.sharehouse_room_id as sub_sharehouse_room_id, b.sharehouse_room_name as sub_sharehouse_room_name, b.sharehouse_room_image as sub_sharehouse_room_image, b.success_reward as sub_success_reward, b.room_area as sub_room_area, b.num_peoples as sub_num_peoples, b.has_water_fee as sub_has_water_fee, b.has_gas_fee as sub_has_gas_fee, b.has_elect_fee as sub_has_elect_fee, b.has_wifi_fee as sub_has_wifi_fee, b.has_room_key as sub_has_room_key, b.has_bed as sub_has_bed, b.has_desk as sub_has_desk, b.has_chair as sub_has_chair, b.has_storage as sub_has_storage, b.has_air_con as sub_has_air_con, b.has_refrigerator as sub_has_refrigerator, b.has_tv as sub_has_tv, b.corner_room as sub_corner_room, b.sunny_room as sub_sunny_room, b.other_terms as sub_other_terms, b.del_flag as sub_del_flag, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time
+        from jh_sharehouse a
+        left join jh_sharehouse_room b on b.sharehouse_id = a.sharehouse_id
+        where a.sharehouse_id = #{sharehouseId}
+    </select>
+        
+    <insert id="insertSharehouse" parameterType="Sharehouse" useGeneratedKeys="true" keyProperty="sharehouseId">
+        insert into jh_sharehouse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="sharehouseName != null and sharehouseName != ''">sharehouse_name,</if>
+            <if test="sharehouseImage != null">sharehouse_image,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="postalCode != null">postal_code,</if>
+            <if test="address01 != null and address01 != ''">address01,</if>
+            <if test="address02 != null and address02 != ''">address02,</if>
+            <if test="address03 != null">address03,</if>
+            <if test="address04 != null">address04,</if>
+            <if test="route01 != null and route01 != ''">route01,</if>
+            <if test="station01 != null and station01 != ''">station01,</if>
+            <if test="walking01 != null">walking01,</if>
+            <if test="route02 != null">route02,</if>
+            <if test="station02 != null">station02,</if>
+            <if test="walking02 != null">walking02,</if>
+            <if test="womenOnly != null">women_only,</if>
+            <if test="foreignersAccept != null">foreigners_accept,</if>
+            <if test="englishSupport != null">english_support,</if>
+            <if test="japaneseSupport != null">japanese_support,</if>
+            <if test="chineseSupport != null">chinese_support,</if>
+            <if test="vietnameseSupport != null">vietnamese_support,</if>
+            <if test="koreanSupport != null">korean_support,</if>
+            <if test="conditions != null">conditions,</if>
+            <if test="sortOrder != null">sort_order,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="sharehouseName != null and sharehouseName != ''">#{sharehouseName},</if>
+            <if test="sharehouseImage != null">#{sharehouseImage},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="postalCode != null">#{postalCode},</if>
+            <if test="address01 != null and address01 != ''">#{address01},</if>
+            <if test="address02 != null and address02 != ''">#{address02},</if>
+            <if test="address03 != null">#{address03},</if>
+            <if test="address04 != null">#{address04},</if>
+            <if test="route01 != null and route01 != ''">#{route01},</if>
+            <if test="station01 != null and station01 != ''">#{station01},</if>
+            <if test="walking01 != null">#{walking01},</if>
+            <if test="route02 != null">#{route02},</if>
+            <if test="station02 != null">#{station02},</if>
+            <if test="walking02 != null">#{walking02},</if>
+            <if test="womenOnly != null">#{womenOnly},</if>
+            <if test="foreignersAccept != null">#{foreignersAccept},</if>
+            <if test="englishSupport != null">#{englishSupport},</if>
+            <if test="japaneseSupport != null">#{japaneseSupport},</if>
+            <if test="chineseSupport != null">#{chineseSupport},</if>
+            <if test="vietnameseSupport != null">#{vietnameseSupport},</if>
+            <if test="koreanSupport != null">#{koreanSupport},</if>
+            <if test="conditions != null">#{conditions},</if>
+            <if test="sortOrder != null">#{sortOrder},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSharehouse" parameterType="Sharehouse">
+        update jh_sharehouse
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="sharehouseName != null and sharehouseName != ''">sharehouse_name = #{sharehouseName},</if>
+            <if test="sharehouseImage != null">sharehouse_image = #{sharehouseImage},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="postalCode != null">postal_code = #{postalCode},</if>
+            <if test="address01 != null and address01 != ''">address01 = #{address01},</if>
+            <if test="address02 != null and address02 != ''">address02 = #{address02},</if>
+            <if test="address03 != null">address03 = #{address03},</if>
+            <if test="address04 != null">address04 = #{address04},</if>
+            <if test="route01 != null and route01 != ''">route01 = #{route01},</if>
+            <if test="station01 != null and station01 != ''">station01 = #{station01},</if>
+            <if test="walking01 != null">walking01 = #{walking01},</if>
+            <if test="route02 != null">route02 = #{route02},</if>
+            <if test="station02 != null">station02 = #{station02},</if>
+            <if test="walking02 != null">walking02 = #{walking02},</if>
+            <if test="womenOnly != null">women_only = #{womenOnly},</if>
+            <if test="foreignersAccept != null">foreigners_accept = #{foreignersAccept},</if>
+            <if test="englishSupport != null">english_support = #{englishSupport},</if>
+            <if test="japaneseSupport != null">japanese_support = #{japaneseSupport},</if>
+            <if test="chineseSupport != null">chinese_support = #{chineseSupport},</if>
+            <if test="vietnameseSupport != null">vietnamese_support = #{vietnameseSupport},</if>
+            <if test="koreanSupport != null">korean_support = #{koreanSupport},</if>
+            <if test="conditions != null">conditions = #{conditions},</if>
+            <if test="sortOrder != null">sort_order = #{sortOrder},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where sharehouse_id = #{sharehouseId}
+    </update>
+
+    <delete id="deleteSharehouseBySharehouseId" parameterType="Long">
+        delete from jh_sharehouse where sharehouse_id = #{sharehouseId}
+    </delete>
+
+    <delete id="deleteSharehouseBySharehouseIds" parameterType="String">
+        delete from jh_sharehouse where sharehouse_id in 
+        <foreach item="sharehouseId" collection="array" open="(" separator="," close=")">
+            #{sharehouseId}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteSharehouseRoomBySharehouseIds" parameterType="String">
+        delete from jh_sharehouse_room where sharehouse_id in 
+        <foreach item="sharehouseId" collection="array" open="(" separator="," close=")">
+            #{sharehouseId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteSharehouseRoomBySharehouseId" parameterType="Long">
+        delete from jh_sharehouse_room where sharehouse_id = #{sharehouseId}
+    </delete>
+
+    <insert id="batchSharehouseRoom">
+        insert into jh_sharehouse_room( sharehouse_id, sharehouse_room_id, sharehouse_room_name, sharehouse_room_image, success_reward, room_area, num_peoples, has_water_fee, has_gas_fee, has_elect_fee, has_wifi_fee, has_room_key, has_bed, has_desk, has_chair, has_storage, has_air_con, has_refrigerator, has_tv, corner_room, sunny_room, other_terms, del_flag, create_by, create_time, update_by, update_time) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.sharehouseId}, #{item.sharehouseRoomId}, #{item.sharehouseRoomName}, #{item.sharehouseRoomImage}, #{item.successReward}, #{item.roomArea}, #{item.numPeoples}, #{item.hasWaterFee}, #{item.hasGasFee}, #{item.hasElectFee}, #{item.hasWifiFee}, #{item.hasRoomKey}, #{item.hasBed}, #{item.hasDesk}, #{item.hasChair}, #{item.hasStorage}, #{item.hasAirCon}, #{item.hasRefrigerator}, #{item.hasTv}, #{item.cornerRoom}, #{item.sunnyRoom}, #{item.otherTerms}, #{item.delFlag}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+</mapper>

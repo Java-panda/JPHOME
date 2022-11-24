@@ -1,0 +1,50 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="border-bottom p-3">
+                <div class="media align-items-center position-relative">
+                  <img th:src="${G_PAGE_OBJECT.my.userImage}" class="mr-2" style="border-radius: 50%;width:54px;height:54px;">
+                  <div class="media-body ml-2 d-flex align-items-center">
+                    <div>
+                        <p class="mb-0"><a class="text-dark" th:text="${G_PAGE_OBJECT.my.userName}"></a></p>
+                    </div>
+                    <i class="text-muted ml-auto fas fa-chevron-right"></i>
+                    <a class="stretched-link" th:href="@{/user/agent/my/profile/info}"></a>
+                  </div>
+                </div>
+            </div>
+            <div class="card-body bg-light border-bottom py-2">契約状態</div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action d-flex align-items-center py-2" href="#/">
+                   <span>大家契約</span>
+                   <i class="text-muted ml-auto fas fa-chevron-right"></i>
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center py-2" href="#/">
+                   <span>仲介契約</span>
+                   <i class="text-muted ml-auto fas fa-chevron-right"></i>
+                </a>
+            </div>
+            <div class="card-body bg-light border-top border-bottom py-2">個人情報</div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action d-flex align-items-center py-2"
+                   th:href="@{/user/agent/my/profile/qrcode}">
+                   <span>Wechat/Line設定</span>
+                   <i class="text-muted ml-auto fas fa-chevron-right"></i>
+                </a>
+                <a class="list-group-item list-group-item-action d-flex align-items-center py-2"
+                    th:href="@{/user/agent/my/profile/password}">
+                   <span>パスワード変更</span>
+                   <i class="text-muted ml-auto fas fa-chevron-right"></i>
+                </a>
+
+            </div>
+            <div class="card-body bg-light border-top border-bottom py-2">システム</div>
+            <div class="list-group list-group-flush list-group-dashed">
+                <a class="list-group-item list-group-item-action d-flex align-items-center py-2" href="#"  onclick="invokeLogout()">
+                    <span>ログアウト</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="parts/front-tabbar"></th:block>

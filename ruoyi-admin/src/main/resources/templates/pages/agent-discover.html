@@ -1,0 +1,114 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card border-0 shadow-sm mb-3" th:each="item : ${G_PAGE_OBJECT.sharehouseList}">
+            <div class="card-header d-flex align-items-center position-relative" th:if="${G_PAGE_OBJECT.useCase.name()} == 'AGENT'">
+                <div class="d-flex">
+                    <img class="rounded-circle" style="width: 50px;height: 50px;" th:src="${item.ownerImage}" />
+                    <div class="ml-3 text-decoration">
+                        <p class="mb-0"><span th:text="${item.ownerName}"></span></p>
+                        <p class="mb-0 text-muted">
+                            <span class="badge badge-warning">オーナー</span>
+                        </p>
+                        <a th:href="@{/agent/people(userId=${item.ownerId},agentId=${G_PAGE_OBJECT.agent.userId})}" class="stretched-link"></a>
+                    </div>
+                </div>
+                <i class="text-muted ml-auto fas fa-chevron-right"></i>
+            </div>
+            <div class="card-header d-flex align-items-center position-relative" th:if="${G_PAGE_OBJECT.useCase.name()} == 'GUEST'">
+                <div class="d-flex">
+                    <img class="rounded-circle" style="width: 50px;height: 50px;" th:src="${item.agentImage}" />
+                    <div class="ml-3 text-decoration">
+                        <p class="mb-0"><span th:text="${item.agentName}"></span></p>
+                        <p class="mb-0 text-muted">
+                            <span class="badge badge-warning">紹介者</span>
+                        </p>
+                        <a th:href="@{/agent/people(userId=${item.agentId},agentId=${G_PAGE_OBJECT.agent.userId})}" class="stretched-link"></a>
+                    </div>
+                </div>
+                <i class="text-muted ml-auto fas fa-chevron-right"></i>
+            </div>
+
+            <div class="card-body border-bottom">
+                <h5>
+                    <a th:href="@{/agent/house/detail(agentId=${G_PAGE_OBJECT.agent.userId},sharehouseId=${item.sharehouseId})}">
+                        <span th:text="${item.sharehouseName}"></span>
+                    </a>
+                    <th:block th:if="${item.emptyRoomCnt > 0}">
+                        <span class="badge badge-success" style="font-size: 10px;vertical-align: middle;margin-top: -0.6em;">空</span>
+                    </th:block>
+                    <th:block th:if="${item.emptyRoomCnt <= 0 and item.emptyPlanRoomCnt > 0}">
+                        <span class="badge badge-warning" style="font-size: 10px;vertical-align: middle;margin-top: -0.6em;">空室予定</span>
+                    </th:block>
+                    <th:block th:if="${item.emptyRoomCnt <= 0 and item.emptyPlanRoomCnt <= 0}">
+                        <span class="badge badge-danger" style="font-size: 10px;vertical-align: middle;margin-top: -0.6em;">満</span>
+                    </th:block>
+                </h5>
+                <h5 class="mb-0">
+                    <a th:href="@{/agent/house/detail(agentId=${G_PAGE_OBJECT.agent.userId},sharehouseId=${item.sharehouseId})}">
+                        <span class="text-warning" th:text="${UJPY.print(item.rentStart,item.rentEnd)}">88,000</span>
+                    </a>
+                </h5>
+                <div class="mt-2 d-flex" th:if="${G_PAGE_OBJECT.useCase.name()} == 'AGENT'">
+                    <button class="btn btn-danger"
+                            th:attr="ng-show='pageHolder.keepedSharehouseIds.includes(' + ${item.sharehouseId} + ')',ng-click='pageHolder.selectedSharehouseId=' + ${item.sharehouseId} + ';actionPerformed(\'pageHolder:agentHouseLinkDelAction\')'">
+						<i class="fas fa-bookmark mr-2"></i>
+						<span>転載済み</span>
+					</button>
+					<button class="btn btn-primary"
+                            th:attr="ng-show='!pageHolder.keepedSharehouseIds.includes(' + ${item.sharehouseId} + ')',ng-click='pageHolder.selectedSharehouseId=' + ${item.sharehouseId} + ';actionPerformed(\'pageHolder:agentHouseLinkAddAction\')'">
+						<i class="fas fa-bookmark mr-2"></i>
+						<span>転載する</span>
+					</button>
+				</div>
+            </div>
+            <div class="list-group list-group-flush list-group-dashed">
+                <div class="list-group-item d-flex align-items-center py-2">
+                     <span>エリア</span>
+                     <span class="ml-auto text-muted" th:text="${item.sharehouseAddress}">東京都墨田区</span>
+                </div>
+                <div class="list-group-item d-flex align-items-center py-2">
+                    <span>交通1</span>
+                    <span class="ml-auto text-muted" th:text="${item.route01}"></span>
+                    <span class="text-muted" th:text="${item.station01}"></span>
+                    <span class="text-muted" th:text="${item.walking01}"></span>
+                    <span  th:if="${item.walking01 != null}"  class="text-muted">分</span>
+                </div>
+                <div th:if="${item.route02 != null}" class="list-group-item d-flex align-items-center py-2">
+                     <span>交通2</span>
+                     <span class="ml-auto text-muted" th:text="${item.route02}"></span>
+                     <span class="text-muted" th:text="${item.station02}"></span>
+                     <span class="text-muted" th:text="${item.walking02}"></span>
+                     <span  th:if="${item.walking02 != null}"  class="text-muted">分</span>
+                </div>
+                 
+                <th:block th:if="${item.womenOnly}">
+	               <div class="list-group-item d-flex align-items-center py-2">
+	                   <span>入居条件</span>
+	                   <span class="ml-auto text-muted">女性のみ</span>
+	               </div>
+                </th:block>
+                <!-- <div class="list-group-item d-flex align-items-center py-2">
+                    <span>入居条件</span>
+                    <span class="ml-auto text-muted" th:if="${!item.womenOnly}">男性可・女性可</span>
+                    <span class="ml-auto text-muted" th:if="${item.womenOnly}">女性のみ</span>
+                    <span class="text-muted" th:if="${item.foreignersAccept}">・外国人可</span>
+                </div> -->
+            </div>
+            <div class="row no-gutters p-0">
+                <!-- 九宫格 开始 -->
+                <div class="col-4 position-relative" th:each="img: ${UString.split(item.sharehouseImage, ',', 9)}">
+                    <a class="bg-light w-100 webo-image webo-image-jquery"
+                       th:href="${UString.modifyLastPathComponent(img, 'max-')}"
+                       th:style="'background-image:url(' + ${img} + ')'"
+                       th:attr="data-gallery='gallery-product-' + ${item.sharehouseId}"></a>
+                </div>
+                <!-- 九宫格 终止 -->
+            </div>
+            <div class="card-footer d-flex border-top bg-white text-muted small">
+                <span class="mr-auto">最終更新日時：</span>
+                <span th:text="${UDate.print(item.roomBedDateModified, 'yyyy-MM-dd HH:mm', '最近')}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<th:block th:replace="parts/front-tabbar"></th:block>-->

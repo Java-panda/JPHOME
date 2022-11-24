@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jphome.system.mapper.SharehouseRoomMapper">
+    
+    <resultMap type="SharehouseRoom" id="SharehouseRoomResult">
+        <result property="sharehouseId"    column="sharehouse_id"    />
+        <result property="sharehouseRoomId"    column="sharehouse_room_id"    />
+        <result property="sharehouseRoomName"    column="sharehouse_room_name"    />
+        <result property="sharehouseRoomImage"    column="sharehouse_room_image"    />
+        <result property="successReward"    column="success_reward"    />
+        <result property="roomArea"    column="room_area"    />
+        <result property="numPeoples"    column="num_peoples"    />
+        <result property="hasWaterFee"    column="has_water_fee"    />
+        <result property="hasGasFee"    column="has_gas_fee"    />
+        <result property="hasElectFee"    column="has_elect_fee"    />
+        <result property="hasWifiFee"    column="has_wifi_fee"    />
+        <result property="hasRoomKey"    column="has_room_key"    />
+        <result property="hasBed"    column="has_bed"    />
+        <result property="hasDesk"    column="has_desk"    />
+        <result property="hasChair"    column="has_chair"    />
+        <result property="hasStorage"    column="has_storage"    />
+        <result property="hasAirCon"    column="has_air_con"    />
+        <result property="hasRefrigerator"    column="has_refrigerator"    />
+        <result property="hasTv"    column="has_tv"    />
+        <result property="cornerRoom"    column="corner_room"    />
+        <result property="sunnyRoom"    column="sunny_room"    />
+        <result property="otherTerms"    column="other_terms"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSharehouseRoomVo">
+        select sharehouse_id, sharehouse_room_id, sharehouse_room_name, sharehouse_room_image, success_reward, room_area, num_peoples, has_water_fee, has_gas_fee, has_elect_fee, has_wifi_fee, has_room_key, has_bed, has_desk, has_chair, has_storage, has_air_con, has_refrigerator, has_tv, corner_room, sunny_room, other_terms, del_flag, create_by, create_time, update_by, update_time from jh_sharehouse_room
+    </sql>
+
+    <select id="selectSharehouseRoomList" parameterType="SharehouseRoom" resultMap="SharehouseRoomResult">
+        <include refid="selectSharehouseRoomVo"/>
+        <where>  
+            <if test="sharehouseRoomName != null  and sharehouseRoomName != ''"> and sharehouse_room_name like concat('%', #{sharehouseRoomName}, '%')</if>
+            <if test="sharehouseRoomImage != null  and sharehouseRoomImage != ''"> and sharehouse_room_image = #{sharehouseRoomImage}</if>
+            <if test="successReward != null "> and success_reward = #{successReward}</if>
+            <if test="roomArea != null "> and room_area = #{roomArea}</if>
+            <if test="numPeoples != null "> and num_peoples = #{numPeoples}</if>
+            <if test="hasWaterFee != null "> and has_water_fee = #{hasWaterFee}</if>
+            <if test="hasGasFee != null "> and has_gas_fee = #{hasGasFee}</if>
+            <if test="hasElectFee != null "> and has_elect_fee = #{hasElectFee}</if>
+            <if test="hasWifiFee != null "> and has_wifi_fee = #{hasWifiFee}</if>
+            <if test="hasRoomKey != null "> and has_room_key = #{hasRoomKey}</if>
+            <if test="hasBed != null "> and has_bed = #{hasBed}</if>
+            <if test="hasDesk != null "> and has_desk = #{hasDesk}</if>
+            <if test="hasChair != null "> and has_chair = #{hasChair}</if>
+            <if test="hasStorage != null "> and has_storage = #{hasStorage}</if>
+            <if test="hasAirCon != null "> and has_air_con = #{hasAirCon}</if>
+            <if test="hasRefrigerator != null "> and has_refrigerator = #{hasRefrigerator}</if>
+            <if test="hasTv != null "> and has_tv = #{hasTv}</if>
+            <if test="cornerRoom != null "> and corner_room = #{cornerRoom}</if>
+            <if test="sunnyRoom != null "> and sunny_room = #{sunnyRoom}</if>
+            <if test="otherTerms != null  and otherTerms != ''"> and other_terms = #{otherTerms}</if>
+        </where>
+    </select>
+    
+    <select id="selectSharehouseRoomBySharehouseId" parameterType="Long" resultMap="SharehouseRoomResult">
+        <include refid="selectSharehouseRoomVo"/>
+        where sharehouse_id = #{sharehouseId}
+    </select>
+        
+    <insert id="insertSharehouseRoom" parameterType="SharehouseRoom">
+        insert into jh_sharehouse_room
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sharehouseId != null">sharehouse_id,</if>
+            <if test="sharehouseRoomId != null">sharehouse_room_id,</if>
+            <if test="sharehouseRoomName != null and sharehouseRoomName != ''">sharehouse_room_name,</if>
+            <if test="sharehouseRoomImage != null">sharehouse_room_image,</if>
+            <if test="successReward != null">success_reward,</if>
+            <if test="roomArea != null">room_area,</if>
+            <if test="numPeoples != null">num_peoples,</if>
+            <if test="hasWaterFee != null">has_water_fee,</if>
+            <if test="hasGasFee != null">has_gas_fee,</if>
+            <if test="hasElectFee != null">has_elect_fee,</if>
+            <if test="hasWifiFee != null">has_wifi_fee,</if>
+            <if test="hasRoomKey != null">has_room_key,</if>
+            <if test="hasBed != null">has_bed,</if>
+            <if test="hasDesk != null">has_desk,</if>
+            <if test="hasChair != null">has_chair,</if>
+            <if test="hasStorage != null">has_storage,</if>
+            <if test="hasAirCon != null">has_air_con,</if>
+            <if test="hasRefrigerator != null">has_refrigerator,</if>
+            <if test="hasTv != null">has_tv,</if>
+            <if test="cornerRoom != null">corner_room,</if>
+            <if test="sunnyRoom != null">sunny_room,</if>
+            <if test="otherTerms != null">other_terms,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sharehouseId != null">#{sharehouseId},</if>
+            <if test="sharehouseRoomId != null">#{sharehouseRoomId},</if>
+            <if test="sharehouseRoomName != null and sharehouseRoomName != ''">#{sharehouseRoomName},</if>
+            <if test="sharehouseRoomImage != null">#{sharehouseRoomImage},</if>
+            <if test="successReward != null">#{successReward},</if>
+            <if test="roomArea != null">#{roomArea},</if>
+            <if test="numPeoples != null">#{numPeoples},</if>
+            <if test="hasWaterFee != null">#{hasWaterFee},</if>
+            <if test="hasGasFee != null">#{hasGasFee},</if>
+            <if test="hasElectFee != null">#{hasElectFee},</if>
+            <if test="hasWifiFee != null">#{hasWifiFee},</if>
+            <if test="hasRoomKey != null">#{hasRoomKey},</if>
+            <if test="hasBed != null">#{hasBed},</if>
+            <if test="hasDesk != null">#{hasDesk},</if>
+            <if test="hasChair != null">#{hasChair},</if>
+            <if test="hasStorage != null">#{hasStorage},</if>
+            <if test="hasAirCon != null">#{hasAirCon},</if>
+            <if test="hasRefrigerator != null">#{hasRefrigerator},</if>
+            <if test="hasTv != null">#{hasTv},</if>
+            <if test="cornerRoom != null">#{cornerRoom},</if>
+            <if test="sunnyRoom != null">#{sunnyRoom},</if>
+            <if test="otherTerms != null">#{otherTerms},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSharehouseRoom" parameterType="SharehouseRoom">
+        update jh_sharehouse_room
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sharehouseRoomId != null">sharehouse_room_id = #{sharehouseRoomId},</if>
+            <if test="sharehouseRoomName != null and sharehouseRoomName != ''">sharehouse_room_name = #{sharehouseRoomName},</if>
+            <if test="sharehouseRoomImage != null">sharehouse_room_image = #{sharehouseRoomImage},</if>
+            <if test="successReward != null">success_reward = #{successReward},</if>
+            <if test="roomArea != null">room_area = #{roomArea},</if>
+            <if test="numPeoples != null">num_peoples = #{numPeoples},</if>
+            <if test="hasWaterFee != null">has_water_fee = #{hasWaterFee},</if>
+            <if test="hasGasFee != null">has_gas_fee = #{hasGasFee},</if>
+            <if test="hasElectFee != null">has_elect_fee = #{hasElectFee},</if>
+            <if test="hasWifiFee != null">has_wifi_fee = #{hasWifiFee},</if>
+            <if test="hasRoomKey != null">has_room_key = #{hasRoomKey},</if>
+            <if test="hasBed != null">has_bed = #{hasBed},</if>
+            <if test="hasDesk != null">has_desk = #{hasDesk},</if>
+            <if test="hasChair != null">has_chair = #{hasChair},</if>
+            <if test="hasStorage != null">has_storage = #{hasStorage},</if>
+            <if test="hasAirCon != null">has_air_con = #{hasAirCon},</if>
+            <if test="hasRefrigerator != null">has_refrigerator = #{hasRefrigerator},</if>
+            <if test="hasTv != null">has_tv = #{hasTv},</if>
+            <if test="cornerRoom != null">corner_room = #{cornerRoom},</if>
+            <if test="sunnyRoom != null">sunny_room = #{sunnyRoom},</if>
+            <if test="otherTerms != null">other_terms = #{otherTerms},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where sharehouse_id = #{sharehouseId}
+    </update>
+
+    <delete id="deleteSharehouseRoomBySharehouseId" parameterType="Long">
+        delete from jh_sharehouse_room where sharehouse_id = #{sharehouseId}
+    </delete>
+
+    <delete id="deleteSharehouseRoomBySharehouseIds" parameterType="String">
+        delete from jh_sharehouse_room where sharehouse_id in 
+        <foreach item="sharehouseId" collection="array" open="(" separator="," close=")">
+            #{sharehouseId}
+        </foreach>
+    </delete>
+
+</mapper>

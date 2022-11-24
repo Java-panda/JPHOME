@@ -1,0 +1,139 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header d-flex align-items-center">
+                <a th:href="@{/agent/house/detail(agentId=${G_PAGE_OBJECT.agent.userId},sharehouseId=${G_PAGE_OBJECT.sharehouseRoomView.sharehouseId})}">
+                    <i class="text-muted mr-auto fas fa-chevron-left"></i>
+                    <span class="ml-2 text-muted">物件詳細</span>
+                </a>
+                <span class="ml-auto badge badge-primary" th:if="${G_PAGE_OBJECT.myHouse}">あなたの物件</span>
+            </div>
+            <div class="card-body pb-2">
+                <h5 class="mt-auto mb-2">
+                    <span id="roomName" th:text="${G_PAGE_OBJECT.sharehouseRoomView.sharehouseRoomName}">部屋名</span>
+                    <span>室-</span> <span th:text="${G_PAGE_OBJECT.sharehouse.sharehouseName}">物件名</span>
+                    <th:block th:if="${G_PAGE_OBJECT.sharehouseRoomView.emptyRoomBedCnt > 0}">
+                        <span class="badge badge-success" style="font-size: 10px; vertical-align: middle; margin-top: -0.6em;">空</span>
+                    </th:block>
+                    <th:block th:if="${G_PAGE_OBJECT.sharehouseRoomView.emptyRoomBedCnt <= 0 and G_PAGE_OBJECT.sharehouseRoomView.emptyPlanRoomBedCnt > 0}">
+                        <span class="badge badge-warning" style="font-size: 10px; vertical-align: middle; margin-top: -0.6em;">空室予定</span>
+                    </th:block>
+                    <th:block th:if="${G_PAGE_OBJECT.sharehouseRoomView.emptyRoomBedCnt <= 0 and G_PAGE_OBJECT.sharehouseRoomView.emptyPlanRoomBedCnt <= 0}">
+                        <span class="badge badge-danger" style="font-size: 10px; vertical-align: middle; margin-top: -0.6em;">満</span>
+                    </th:block>
+                </h5>
+                <div class="owl-carousel owl-carousel-large owl-theme mb-3">
+                    <div class="item" th:each="img: ${UString.split(G_PAGE_OBJECT.sharehouseRoomView.sharehouseRoomImage, ',')}">
+                        <img th:src="${UString.modifyLastPathComponent(img, 'max-')}" class="d-block">
+                    </div>
+                </div>
+                <div class="d-flex align-items-center my-3">
+                    <h4 class="mb-0 text-warning">
+                        <span th:text="${'￥' +UJPY.print(G_PAGE_OBJECT.sharehouseRoomView.rentStart,G_PAGE_OBJECT.sharehouseRoomView.rentEnd)}">20,000</span>
+                    </h4>
+                </div>
+            </div>
+            <div class="card-body bg-light border-top py-2">
+                <span>ベット情報</span>
+            </div>
+            <div class="border-bottom">
+                <table class="table mb-0" style="font-size: 90%;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>料金</th>
+                            <th>状態</th>
+                            <th>入居日</th>
+                        </tr>
+                    </thead>
+                    <tbody th:if="${G_PAGE_OBJECT.myHouse}">
+                        <tr ng-repeat="item in pageHolder.sharehouseRoomBeds">
+                            <td>
+                                <a href="#/" ng-click="listItemSelected(item, pageHolder.sharehouseRoomBeds, 'pageHolder:sharehouseRoomBedAdjustEvent')">{{item.bedName}}</a>
+                            </td>
+                            <td>{{item.bedPrice}}</td>
+                            <td>{{item.bedStatus}}</td>
+                            <td>{{item.bedDate}}</td>
+                        </tr>
+                    </tbody>
+                    <tbody th:if="${!G_PAGE_OBJECT.myHouse}">
+                        <tr ng-repeat="item in pageHolder.sharehouseRoomBeds">
+                            <td>{{item.bedName}}</td>
+                            <td>{{item.bedPrice}}</td>
+                            <td>{{item.bedStatus}}</td>
+                            <td>{{item.bedDate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="border-top mb-0 px-2 py-2 text-muted d-flex align-items-center" th:if="${G_PAGE_OBJECT.myHouse}">
+                    <small class="ml-2">※ベット名称をクリックして、空室調整ができます。</small>
+                </p>
+            </div>
+            <div class="card-body bg-light py-2">共益費</div>
+            <div class="card-body border-top border-bottom">
+                <div class="tag-list mb-0">
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasWifiFee} ?  'badge-primary': 'badge-secondary'">Wi-Fi代込み</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasWaterFee} ? 'badge-primary': 'badge-secondary'">水道代込み</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasGasFee} ?   'badge-primary': 'badge-secondary'">ガス代込み</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasElectFee} ? 'badge-primary': 'badge-secondary'">電気代込み</span>
+                </div>
+            </div>
+            <div class="card-body bg-light border-bottom py-2">部屋基本情報</div>
+            <div class="list-group list-group-flush list-group-dashed">
+                <div class="list-group-item d-flex align-items-center py-2">
+                    <span>広さ：</span> <span class="ml-auto text-muted" th:text="${G_PAGE_OBJECT.sharehouseRoomView.roomArea}">10</span> <span class="text-muted">㎡</span>
+                </div>
+                <div class="list-group-item d-flex align-items-center py-2">
+                    <span>入居条件：</span> <span class="ml-auto text-muted" th:text="${UString.null2Other(G_PAGE_OBJECT.sharehouseRoomView.otherTerms, '特になし')}">なし</span>
+                </div>
+            </div>
+            <div class="card-body border-top bg-light py-2">部屋設備・サービス</div>
+            <div class="card-body border-top">
+                <div class="tag-list mb-0">
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasRoomKey} ?       'badge-primary': 'badge-secondary'">鍵</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasBed} ?           'badge-primary': 'badge-secondary'">床</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasDesk} ?         'badge-primary': 'badge-secondary'">机</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasChair} ?        'badge-primary': 'badge-secondary'">椅子</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasStorage} ?      'badge-primary': 'badge-secondary'">収納</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasAirCon} ?       'badge-primary': 'badge-secondary'">エアコン</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasRefrigerator} ? 'badge-primary': 'badge-secondary'">冷蔵庫</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.hasTv} ?           'badge-primary': 'badge-secondary'">テレビ</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.cornerRoom} ?      'badge-primary': 'badge-secondary'">角部屋</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseRoomView.sunnyRoom} ?       'badge-primary': 'badge-secondary'">日当り</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="ios-footer-bar d-flex align-items-center px-3" th:if="${G_PAGE_OBJECT.useCase.name()} == 'AGENT'">
+    <a href="#" class="btn btn-warning" style="min-width: 100px;padding:.375rem .75rem;" role="button" aria-pressed="true" data-toggle="modal" data-target="#successRewardModalCenter">AD</a>
+    <a th:href="@{/agent/people?(userId=${G_PAGE_OBJECT.sharehouse.userId})}" style="padding:.375rem .75rem;"
+       class="ml-2 btn btn-primary btn-block" role="button" aria-pressed="true">担当者に連絡</a>
+</div>
+<div class="ios-footer-bar d-flex align-items-center px-3" th:if="${G_PAGE_OBJECT.useCase.name()} == 'GUEST'">
+    <a th:href="@{/agent/people?(userId=${G_PAGE_OBJECT.agent.userId},agentId=${G_PAGE_OBJECT.agent.userId})}" style="padding:.375rem .75rem;"
+       class="ml-2 btn btn-primary btn-block" role="button" aria-pressed="true">担当者に連絡</a>
+</div>
+<!--成功報酬 dialog Start-->
+<div class="modal fade" id="successRewardModalCenter" tabindex="-1" role="dialog" aria-labelledby="successRewardModalCenterTitle" aria-hidden="true"
+     th:if="${G_PAGE_OBJECT.useCase.name()} == 'AGENT'">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successRewardModalCenterTitle">成功報酬：</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span th:text="${'￥' +UJPY.print(G_PAGE_OBJECT.SharehouseRoomView.successReward)}"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--成功報酬 dialog End-->

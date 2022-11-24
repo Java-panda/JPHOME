@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('部屋管理列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>部屋名称：</label>
+                                <input type="text" name="sharehouseRoomName"/>
+                            </li>
+                            <li>
+                                <label>成功報酬：</label>
+                                <input type="text" name="successReward"/>
+                            </li>
+                            <li>
+                                <label>広さ：</label>
+                                <input type="text" name="roomArea"/>
+                            </li>
+                            <li>
+                                <label>入居人数：</label>
+                                <input type="text" name="numPeoples"/>
+                            </li>
+                            <li>
+                                <label>水道料金：</label>
+                                <input type="text" name="hasWaterFee"/>
+                            </li>
+                            <li>
+                                <label>ガス料金：</label>
+                                <input type="text" name="hasGasFee"/>
+                            </li>
+                            <li>
+                                <label>電気料金：</label>
+                                <input type="text" name="hasElectFee"/>
+                            </li>
+                            <li>
+                                <label>WIFI料金：</label>
+                                <input type="text" name="hasWifiFee"/>
+                            </li>
+                            <li>
+                                <label>鍵：</label>
+                                <input type="text" name="hasRoomKey"/>
+                            </li>
+                            <li>
+                                <label>床：</label>
+                                <input type="text" name="hasBed"/>
+                            </li>
+                            <li>
+                                <label>机：</label>
+                                <input type="text" name="hasDesk"/>
+                            </li>
+                            <li>
+                                <label>椅子：</label>
+                                <input type="text" name="hasChair"/>
+                            </li>
+                            <li>
+                                <label>収納：</label>
+                                <input type="text" name="hasStorage"/>
+                            </li>
+                            <li>
+                                <label>エアコン：</label>
+                                <input type="text" name="hasAirCon"/>
+                            </li>
+                            <li>
+                                <label>冷蔵庫：</label>
+                                <input type="text" name="hasRefrigerator"/>
+                            </li>
+                            <li>
+                                <label>テレビ：</label>
+                                <input type="text" name="hasTv"/>
+                            </li>
+                            <li>
+                                <label>角部屋：</label>
+                                <input type="text" name="cornerRoom"/>
+                            </li>
+                            <li>
+                                <label>日当り：</label>
+                                <input type="text" name="sunnyRoom"/>
+                            </li>
+                            <li>
+                                <label>其の他の条件：</label>
+                                <input type="text" name="otherTerms"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:room:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:room:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:room:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:room:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:room:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:room:remove')}]];
+        var prefix = ctx + "system/room";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "部屋管理",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'sharehouseId',
+                    title: '寮ID',
+                    visible: false
+                },
+                {
+                    field: 'sharehouseRoomId',
+                    title: '部屋ID',
+                    visible: false
+                },
+                {
+                    field: 'sharehouseRoomName',
+                    title: '部屋名称'
+                },
+                {
+                    field: 'sharehouseRoomImage',
+                    title: '部屋写真'
+                },
+                {
+                    field: 'successReward',
+                    title: '成功報酬'
+                },
+                {
+                    field: 'roomArea',
+                    title: '広さ'
+                },
+                {
+                    field: 'numPeoples',
+                    title: '入居人数'
+                },
+                {
+                    field: 'hasWaterFee',
+                    title: '水道料金'
+                },
+                {
+                    field: 'hasGasFee',
+                    title: 'ガス料金'
+                },
+                {
+                    field: 'hasElectFee',
+                    title: '電気料金'
+                },
+                {
+                    field: 'hasWifiFee',
+                    title: 'WIFI料金'
+                },
+                {
+                    field: 'hasRoomKey',
+                    title: '鍵'
+                },
+                {
+                    field: 'hasBed',
+                    title: '床'
+                },
+                {
+                    field: 'hasDesk',
+                    title: '机'
+                },
+                {
+                    field: 'hasChair',
+                    title: '椅子'
+                },
+                {
+                    field: 'hasStorage',
+                    title: '収納'
+                },
+                {
+                    field: 'hasAirCon',
+                    title: 'エアコン'
+                },
+                {
+                    field: 'hasRefrigerator',
+                    title: '冷蔵庫'
+                },
+                {
+                    field: 'hasTv',
+                    title: 'テレビ'
+                },
+                {
+                    field: 'cornerRoom',
+                    title: '角部屋'
+                },
+                {
+                    field: 'sunnyRoom',
+                    title: '日当り'
+                },
+                {
+                    field: 'otherTerms',
+                    title: '其の他の条件'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sharehouseId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sharehouseId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

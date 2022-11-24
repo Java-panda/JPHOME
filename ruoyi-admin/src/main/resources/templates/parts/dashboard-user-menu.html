@@ -1,0 +1,14 @@
+<div class="dropdown d-inline-block">
+    <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img class="rounded-circle header-profile-user"
+             ng-src="{{pageHolder.userMeta.userImage}}" alt="Header Avatar">
+        <span class="d-none d-xl-inline-block ml-1 font-weight-medium font-size-15">{{pageHolder.userMeta.userName}}</span>
+        <i class="uil-angle-down d-none d-xl-inline-block font-size-15"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="#/" onclick="invokeLogout()">
+            <i class="uil uil-sign-out-alt font-size-18 align-middle mr-1 text-muted"></i>
+            <span class="align-middle">ログアウト</span>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<div class="row justify-content-md-center">
+	<div class="col-md-4">
+		<div class="card border-0 shadow-sm mb-3"
+			th:each="item : ${G_PAGE_OBJECT.sharehouseList}">
+			<div class="card-body pb-2">
+				<div class="d-flex align-items-center" style="padding-bottom: inherit;">
+					<div style="width: 40px;" class="text-center">
+						<a >
+							<img class="img-thumbnail rounded-circle"
+								style="width: 40px;; height: 40px; padding: .1rem"
+								src="https://img.ranking.net/uploads/item/image/8c/cb/7e/large_cropped_%E7%9F%B3%E5%8E%9F%E3%81%95%E3%81%A8%E3%81%BF_DB.jpg" />
+						</a>
+					</div>
+					<div class="ml-3 text-decoration" style="margin-left: 0.3rem!important;">
+						<p class="mb-0 small">
+							<span th:text="${item.sharehouseUserName}">東京相撲人</span>
+						</p>
+						<p class="mb-0 small">
+							<span th:text="${UDate.print(item.roomBedDateModified, 'yyyy-MM-dd')}">2021-01-17</span>
+						</p>
+					</div>
+					<div class="ml-auto">
+						<th:block th:if="${item.keeped}">
+							<button class="btn btn-sm btn-primary ml-auto shadow-sm"
+							              th:attr="ng-click='pageHolder.selectedSharehouseId=' + ${item.sharehouseId} + ';actionPerformed(\'pageHolder:agentHouseLinkDelAction\')'">
+								 <span>転載済</span>
+							</button>
+						</th:block>
+						<th:block th:if="${!item.keeped}">
+							<th:block th:if="${item.totalRoomCnt > 0}">
+								<button class="btn btn-sm btn-primary ml-auto shadow-sm"
+								              th:attr="ng-click='pageHolder.selectedSharehouseId=' + ${item.sharehouseId} + ';actionPerformed(\'pageHolder:agentHouseLinkAddAction\')'">
+									 <span>未転載</span>
+								</button>
+								</th:block>
+								<th:block th:if="${item.emptyRoomCnt <= 0 and item.emptyPlanRoomCnt <= 0}">
+								<button class="btn btn-sm btn-primary ml-auto shadow-sm"
+								              th:attr="ng-click='pageHolder.selectedSharehouseId=' + ${item.sharehouseId} + ';actionPerformed(\'pageHolder:agentHouseLinkAddAction\')'" disabled>
+									 <span>未転載</span>
+								</button>
+								</th:block>
+						</th:block>
+					</div>
+				</div>
+				<h5 class="mt-auto mb-2">
+					<a
+						th:href="@{/templates/system/sharehouse/detail(agentId=${G_PAGE_OBJECT.agentId},sharehouseId=${item.sharehouseId})}">
+						<span th:text="${item.sharehouseName}"></span>
+					</a>
+					<th:block th:if="${item.emptyRoomCnt > 0}">
+						<span class="badge badge-success"
+							style="font-size: 10px; vertical-align: middle; margin-top: -0.6em;">空室</span>
+					</th:block>
+					<th:block th:if="${item.emptyRoomCnt <= 0 and item.emptyPlanRoomCnt > 0}">
+						<span class="badge badge-warning"
+							style="font-size: 10px; vertical-align: middle; margin-top: -0.6em;">空室予定</span>
+					</th:block>
+					<th:block th:if="${item.emptyRoomCnt <= 0 and item.emptyPlanRoomCnt <= 0}">
+						<span class="badge badge-danger"
+							style="font-size: 10px; vertical-align: middle; margin-top: -0.6em;">満室</span>
+					</th:block>
+				</h5>
+				<div class="d-flex align-items-center my-3" style="margin-bottom: 0rem!important;">
+					<h4 class="mb-0 text-warning">
+						<span th:text="${'￥' +UJPY.print(item.rentStart,item.rentEnd)}">88,000</span>
+					</h4>
+				</div>
+			</div>
+			<div class="list-group list-group-flush list-group-dashed" style="line-height: 0.9;">
+				<div class="list-group-item list-group-item-action d-flex align-items-center py-2">
+					 <span>エリア</span>
+					 <span class="ml-auto text-muted" th:text="${item.sharehouseAddress}">東京都墨田区</span>
+				</div>
+				<div class="list-group-item list-group-item-action d-flex align-items-center py-2">
+					<span>交通1</span>
+					<span class="ml-auto text-muted" th:text="${item.route01}"></span>
+					<span class="text-muted" th:text="${item.station01}"></span>
+					<span class="text-muted" th:text="${item.walking01}"></span>
+					<span  th:if="${item.walking01 != null}"  class="text-muted">分</span>
+				</div>
+				<div th:if="${item.route02 != null}" class="list-group-item list-group-item-action d-flex align-items-center py-2">
+					 <span>交通2</span>
+					 <span class="ml-auto text-muted" th:text="${item.route02}"></span>
+					 <span class="text-muted" th:text="${item.station02}"></span>
+					 <span class="text-muted" th:text="${item.walking02}"></span>
+					 <span  th:if="${item.walking02 != null}"  class="text-muted">分</span>
+				</div>
+				 <div class="list-group-item list-group-item-action d-flex align-items-center py-2">
+					<span>入居条件</span>
+					<span class="ml-auto text-muted" th:if="${!item.womenOnly}">男性可・女性可</span>
+					<span class="ml-auto text-muted" th:if="${item.womenOnly}">女性のみ</span>
+					<span class="text-muted" th:if="${item.foreignersAccept}">・外国人可</span>
+				</div>
+			</div>
+			<div class="row no-gutters px-3 pb-3 mt-3" style="margin-top: 0rem!important;padding-left: 0rem!important;padding-right: 0rem!important;padding-bottom: 0.2rem!important;">
+				<div class="col-4 position-relative"
+					th:each="img: ${UString.split(item.sharehouseImage, ',')}">
+					<a class="bg-light w-100 webo-image"
+						th:href="${UString.modifyLastPathComponent(img, 'max-')}"
+						th:style="'background-image:url(' + ${img} + ')'"
+						th:attr="data-gallery='gallery-product-' + ${item.sharehouseId}"></a>
+				</div>
+			</div>
+			<!-- <span class="small  d-flex" style="color: #6c757d!important;padding-left: 0.3rem!important;margin-bottom: 0.2rem!important;" th:text="${UDate.print(item.roomBedDateModified, 'yyyy-MM-dd')}">2021-01-01</span> -->
+		</div>
+	</div>
+</div>

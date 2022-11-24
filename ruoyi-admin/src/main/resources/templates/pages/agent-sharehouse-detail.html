@@ -1,0 +1,235 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header d-flex">
+                <a th:href="@{/agent/discover(agentId=${G_PAGE_OBJECT.agent.userId})}">
+                    <i class="text-muted mr-auto fas fa-chevron-left"></i>
+                    <span class="ml-2 text-muted">物件一覧</span>
+                </a>
+            </div>
+            <div class="card-body pb-2 border-bottom">
+                <h5 class="mt-auto mb-2">
+                    <span th:text="${G_PAGE_OBJECT.sharehouseView.sharehouseName}">物件名</span>
+                    <th:block th:if="${G_PAGE_OBJECT.sharehouseView.emptyRoomCnt > 0}">
+                        <span class="badge badge-success" style="font-size: 10px;vertical-align: middle;margin-top: -0.6em;">空</span>
+                    </th:block>
+                       <th:block th:if="${G_PAGE_OBJECT.sharehouseView.emptyRoomCnt <= 0 and G_PAGE_OBJECT.sharehouseView.emptyPlanRoomCnt > 0}">
+                        <span class="badge badge-warning" style="font-size: 10px;vertical-align: middle;margin-top: -0.6em;">空室予定</span>
+                    </th:block>
+                    <th:block th:if="${G_PAGE_OBJECT.sharehouseView.emptyRoomCnt < 0 and G_PAGE_OBJECT.sharehouseView.emptyPlanRoomCnt < 0}">
+                        <span class="badge badge-danger" style="font-size: 10px;vertical-align: middle;margin-top: -0.6em;">満</span>
+                    </th:block>
+                </h5>
+                <div class="owl-carousel owl-carousel-large owl-theme mb-3" style="min-height:300px;">
+                    <div class="item" th:each="img: ${UString.split(G_PAGE_OBJECT.sharehouseView.sharehouseImage, ',')}">
+                        <img th:src="${UString.modifyLastPathComponent(img, 'max-')}" class="d-block">
+                    </div>
+                </div>
+                <div class="d-flex align-items-center my-3">
+                     <h4 class="mb-0 text-warning">
+                        <span th:text="${'￥' +UJPY.print(G_PAGE_OBJECT.sharehouseView.rentStart,G_PAGE_OBJECT.sharehouseView.rentEnd)}">20,000</span>
+                     </h4>
+                </div>
+                <article class="rounded p-0" th:text="${G_PAGE_OBJECT.sharehouseFacility.description}"></article>
+            </div>
+
+            <div class="card-body bg-light border-bottom py-2">物件概要</div>
+            <div class="list-group list-group-flush list-group-dashed">
+                <div class="list-group-item list-group-item-action d-flex align-items-center py-2">
+                    <span>エリア：</span>
+                    <span class="ml-auto text-muted" th:text="${G_PAGE_OBJECT.sharehouseView.address01}">住所</span>
+                    <span class="text-muted" th:text="${G_PAGE_OBJECT.sharehouseView.address02}"></span>
+                    <span class="text-muted" th:text="${G_PAGE_OBJECT.sharehouseView.address03}"></span>
+                    <!-- <span class="text-muted" th:text="${G_PAGE_OBJECT.sharehouseView.address04}"></span> -->
+                </div>
+                <div class="list-group-item list-group-item-action d-flex align-items-center py-2" >
+                    <span>交通1：</span>
+                    <span class="ml-auto text-muted" th:text="${G_PAGE_OBJECT.sharehouseView.route01}"></span>
+                    <span class="text-muted" th:text="${G_PAGE_OBJECT.sharehouseView.station01}"></span>
+                    <span class="text-muted" th:text="${G_PAGE_OBJECT.sharehouseView.walking01}"></span>
+                    <span class="text-muted" th:if="${G_PAGE_OBJECT.sharehouseView.walking01 != null}">分</span>
+                </div>
+                <div th:if="${G_PAGE_OBJECT.sharehouseView.route02 != null}" class="list-group-item list-group-item-action d-flex align-items-center py-2">
+                    <span>交通2：</span>
+                    <span class="ml-auto text-muted" th:text="${G_PAGE_OBJECT.sharehouseView.route02}"></span>
+                    <span class="text-muted" th:text="${G_PAGE_OBJECT.sharehouseView.station02}"></span>
+                    <span class="text-muted" th:text="${G_PAGE_OBJECT.sharehouseView.walking02}"></span>
+                    <span class="text-muted"  th:if="${G_PAGE_OBJECT.sharehouseView.walking02 != null}">分</span>
+                </div>
+                <div class="list-group-item list-group-item-action d-flex align-items-center py-2">
+                    <span>入居条件：</span>
+                      <span class="ml-auto text-muted" th:if="${!G_PAGE_OBJECT.sharehouseView.womenOnly}">男性・女性</span>
+                    <span class="ml-auto text-muted" th:if="${G_PAGE_OBJECT.sharehouseView.womenOnly}">女性のみ</span>
+                    <span class="text-muted" th:if="${G_PAGE_OBJECT.sharehouseView.foreignersAccept}">・外国人可</span>
+                </div>
+                <!-- 
+                <div class="list-group-item list-group-item-action d-flex align-items-center py-2">
+                    <span>入居条件：</span>
+                      <span class="ml-auto text-muted" th:if="${G_PAGE_OBJECT.sharehouseView.conditions}">
+                      </span>
+                </div>
+                 -->
+            </div>
+            <div class="card-body bg-light border-top py-2">共有設備・サービス</div>
+            <div class="card-body border-top border-bottom">
+                <div class="tag-list mb-0">
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasWifi} ?         'badge-primary': 'badge-secondary'">Wi-Fi</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasKitchen} ?      'badge-primary': 'badge-secondary'">キッチン</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasToilet} ?       'badge-primary': 'badge-secondary'">トイレ</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasBathroom} ?     'badge-primary': 'badge-secondary'">浴室</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasWasher} ?      'badge-primary': 'badge-secondary'">洗濯機</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasDryer} ?       'badge-primary': 'badge-secondary'">乾燥機</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasRefrigerator} ? 'badge-primary': 'badge-secondary'">冷蔵庫</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasGasStove} ?     'badge-primary': 'badge-secondary'">ガスコンロ</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasIhStove} ?      'badge-primary': 'badge-secondary'">IHコンロ</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasMicrowave} ?    'badge-primary': 'badge-secondary'">電子レンジ</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasTv} ?           'badge-primary': 'badge-secondary'">テレビ</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasPc} ?           'badge-primary': 'badge-secondary'">共用PC</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasBicycleP} ?     'badge-primary': 'badge-secondary'">駐輪場</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasCarP} ?        'badge-primary': 'badge-secondary'">駐車場</span>
+                    <span class="lable badge" th:classappend="${G_PAGE_OBJECT.sharehouseFacility.hasParty} ?       'badge-primary': 'badge-secondary'">パーティー</span>
+                </div>
+            </div>
+
+        </div>
+
+        <p class="text-muted mb-2">部屋一覧</p>
+            <nav>
+                <div class="nav nav-pills nav-fill mb-2" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">空室のみ</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">すべて</a>
+                </div>
+            </nav>
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="tab-content" id="nav-tabContent">
+                    <!-- 空室のみ START -->
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div th:each="item : ${G_PAGE_OBJECT.sharehouseRoomView}">
+                            <th:block th:if="${item.emptyRoomBedCnt > 0 || item.emptyPlanRoomBedCnt > 0}">
+                                <div class="card-body border-bottom">
+                                    <div class="media mb-2 position-relative">
+                                        <img th:src="${#strings.substringBefore(item.sharehouseRoomImage+ ',' ,',')}" class="rounded mr-2" style="width:100px;height:110px;">
+                                        <div class="media-body">
+                                            <h5 class="mb-1">
+                                                <span th:text="${item.sharehouseRoomName + '(' + item.numPeoples + '人室)'}"></span>
+                                                <th:block th:if="${item.emptyRoomBedCnt > 0}">
+                                                    <span class="badge badge-success"
+                                                          style="font-size: 10px; vertical-align: middle; margin-top: -0.6em;">空</span>
+                                                </th:block>
+                                                <th:block th:if="${item.emptyPlanRoomBedCnt > 0}">
+                                                    <span class="badge badge-warning"
+                                                          style="float:right; font-size: 10px; vertical-align: middle; margin-top: 0.6em;">空室予定
+                                                    </span>
+                                                    
+                                                </th:block>
+                                                <th:block th:if="${item.emptyRoomBedCnt <= 0 && item.emptyPlanRoomBedCnt <= 0}">
+                                                    <span class="badge badge-danger"
+                                                            style="font-size: 10px; vertical-align: middle; margin-top: -0.6em;">満</span>
+                                                </th:block>
+                                            </h5>
+                                            <p>
+                                                <span style="float:right;font-weight:normal;font-size:12px;vertical-align: middle;" th:text="${UString.safeSubstring(item.emptyPlanRoomMoveInDate, 5, 10)}">2021/08/01</span>
+                                            </p>
+                                            <h5 class="mb-1 text-warning" th:text="${'￥' +UJPY.print(item.rentStart,item.rentEnd)}"></h5>
+                                            <p class="text-muted mb-0">
+                                                <span class="text-dark no-underline">広さ：</span>
+                                                <span class="text-dark no-underline" th:text="${item.roomArea}"></span>
+                                                <span class="text-dark no-underline">㎡</span>
+                                            </p>
+                                            <p class="text-muted mb-0">
+                                                <span class="text-dark no-underline">入居条件：</span>
+                                                <span class="text-dark no-underline" th:text="${UString.null2Other(item.otherTerms, '特になし')}">なし</span>
+                                            </p>
+                                        </div>
+                                        <a class="stretched-link"
+                                           th:href="@{/agent/house/room/detail(agentId=${G_PAGE_OBJECT.agent.userId},sharehouseId=${item.sharehouseId},sharehouseRoomId=${item.sharehouseRoomId})}"></a>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                    <!-- 空室のみ END -->
+                    <!-- すべて START -->
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div class="card-body border-bottom" th:each="item : ${G_PAGE_OBJECT.sharehouseRoomView}">
+                            <div class="media mb-2 position-relative">
+                                <img th:src="${#strings.substringBefore(item.sharehouseRoomImage+ ',' ,',')}" class="rounded mr-2" style="width:100px;height:110px;">
+                                <div class="media-body">
+                                    <h5 class="mb-1">
+                                        <span th:text="${item.sharehouseRoomName + '(' + item.numPeoples + '人室)'}"></span>
+                                        <th:block th:if="${item.emptyRoomBedCnt > 0}">
+                                            <span class="badge badge-success"
+                                                  style="font-size: 10px; vertical-align: middle; margin-top: -0.6em;">空</span>
+                                        </th:block>
+                                        <th:block th:if="${item.emptyPlanRoomBedCnt > 0}">
+                                            <span class="badge badge-warning"
+                                                  style="float:right; font-size: 10px; vertical-align: middle; margin-top: 0.6em;">空室予定</span>
+                                        </th:block>
+                                        <th:block th:if="${item.emptyRoomBedCnt <= 0 && item.emptyPlanRoomBedCnt <= 0}">
+                                            <span class="badge badge-danger"
+                                                    style="font-size: 10px; vertical-align: middle; margin-top: -0.6em;">満</span>
+                                        </th:block>
+                                        
+                                    </h5>
+                                    <p>
+                                        <span style="float:right;font-weight:normal;font-size:12px;vertical-align: middle;" th:text="${UString.safeSubstring(item.emptyPlanRoomMoveInDate, 5, 10)}">2021/08/01</span>
+                                    </p>
+                                    <h5 class="mb-2 text-warning" th:text="${'￥' +UJPY.print(item.rentStart,item.rentEnd)}"></h5>
+                                    <p class="text-muted mb-0">
+                                        <span class="text-dark no-underline">広さ：</span>
+                                        <span class="text-dark no-underline" th:text="${item.roomArea}"></span>
+                                        <span class="text-dark no-underline">㎡</span>
+                                    </p>
+                                    <p class="text-muted mb-0">
+                                        <span class="text-dark no-underline">入居条件：</span>
+                                        <span class="text-dark no-underline" th:text="${UString.null2Other(item.otherTerms, '特になし')}">なし</span>
+                                    </p>
+                                </div>
+                                <a class="stretched-link"
+                                   th:href="@{/agent/house/room/detail(agentId=${G_PAGE_OBJECT.agent.userId},sharehouseId=${item.sharehouseId},sharehouseRoomId=${item.sharehouseRoomId})}"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- すべて END -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:if="${G_PAGE_OBJECT.useCase.name()} == 'AGENT'">
+    <div class="ios-footer-bar d-flex align-items-center px-3">
+        <a href="#" class="btn btn-warning" role="button" aria-pressed="true" style="min-width: 100px;padding:.375rem .75rem;"
+           data-toggle="modal" data-target="#successRewardModalCenter">AD</a>
+        <a th:href="@{/agent/people?(userId=${G_PAGE_OBJECT.sharehouseView.userId})}" style="padding:.375rem .75rem;"
+           class="btn btn-primary btn-block ml-2" role="button" aria-pressed="true">担当者に連絡</a>
+    </div>
+    <!-- dialog Start-->
+    <div class="modal fade" id="successRewardModalCenter" tabindex="-1" role="dialog" aria-labelledby="successRewardModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successRewardModalCenterTitle">成功報酬：</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <span th:text="${'￥' +UJPY.print(G_PAGE_OBJECT.sharehouseView.successRewardStart,G_PAGE_OBJECT.sharehouseView.successRewardEnd)}"></span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- dialog End-->
+</th:block>
+<th:block th:if="${G_PAGE_OBJECT.useCase.name()} == 'GUEST'">
+    <div class="ios-footer-bar d-flex align-items-center px-3">
+        <a th:href="@{/agent/people?(userId=${G_PAGE_OBJECT.agent.userId},agentId=${G_PAGE_OBJECT.agent.userId})}" style="padding:.375rem .75rem;"
+           class="btn btn-primary btn-block ml-2" role="button" aria-pressed="true">担当者に連絡</a>
+    </div>
+</th:block>

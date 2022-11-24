@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('建物管理列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>ユーザーID：</label>
+                                <input type="text" name="userId"/>
+                            </li>
+                            <li>
+                                <label>寮名称：</label>
+                                <input type="text" name="sharehouseName"/>
+                            </li>
+                            <li>
+                                <label>経度：</label>
+                                <input type="text" name="longitude"/>
+                            </li>
+                            <li>
+                                <label>緯度：</label>
+                                <input type="text" name="latitude"/>
+                            </li>
+                            <li>
+                                <label>郵便番号：</label>
+                                <input type="text" name="postalCode"/>
+                            </li>
+                            <li>
+                                <label>エリア１：</label>
+                                <input type="text" name="address01"/>
+                            </li>
+                            <li>
+                                <label>エリア２：</label>
+                                <input type="text" name="address02"/>
+                            </li>
+                            <li>
+                                <label>エリア３：</label>
+                                <input type="text" name="address03"/>
+                            </li>
+                            <li>
+                                <label>エリア４：</label>
+                                <input type="text" name="address04"/>
+                            </li>
+                            <li>
+                                <label>路線１：</label>
+                                <input type="text" name="route01"/>
+                            </li>
+                            <li>
+                                <label>駅１：</label>
+                                <input type="text" name="station01"/>
+                            </li>
+                            <li>
+                                <label>徒歩１：</label>
+                                <input type="text" name="walking01"/>
+                            </li>
+                            <li>
+                                <label>路線２：</label>
+                                <input type="text" name="route02"/>
+                            </li>
+                            <li>
+                                <label>駅２：</label>
+                                <input type="text" name="station02"/>
+                            </li>
+                            <li>
+                                <label>徒歩２：</label>
+                                <input type="text" name="walking02"/>
+                            </li>
+                            <li>
+                                <label>他の条件：</label>
+                                <input type="text" name="conditions"/>
+                            </li>
+                            <li>
+                                <label>ソート順：</label>
+                                <input type="text" name="sortOrder"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:sharehouse:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:sharehouse:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:sharehouse:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:sharehouse:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:sharehouse:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:sharehouse:remove')}]];
+        var delFlagDatas = [[${@dict.getType('sys_yes_no')}]];
+        var prefix = ctx + "system/sharehouse";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "建物管理",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'sharehouseId',
+                    title: '寮ID',
+                    visible: false
+                },
+                {
+                    field: 'userId',
+                    title: 'ユーザーID'
+                },
+                {
+                    field: 'sharehouseName',
+                    title: '寮名称'
+                },
+                {
+                    field: 'sharehouseImage',
+                    title: '寮写真'
+                },
+                {
+                    field: 'longitude',
+                    title: '経度'
+                },
+                {
+                    field: 'latitude',
+                    title: '緯度'
+                },
+                {
+                    field: 'postalCode',
+                    title: '郵便番号'
+                },
+                {
+                    field: 'address01',
+                    title: 'エリア１'
+                },
+                {
+                    field: 'address02',
+                    title: 'エリア２'
+                },
+                {
+                    field: 'address03',
+                    title: 'エリア３'
+                },
+                {
+                    field: 'address04',
+                    title: 'エリア４'
+                },
+                {
+                    field: 'route01',
+                    title: '路線１'
+                },
+                {
+                    field: 'station01',
+                    title: '駅１'
+                },
+                {
+                    field: 'walking01',
+                    title: '徒歩１'
+                },
+                {
+                    field: 'route02',
+                    title: '路線２'
+                },
+                {
+                    field: 'station02',
+                    title: '駅２'
+                },
+                {
+                    field: 'walking02',
+                    title: '徒歩２'
+                },
+                {
+                    field: 'womenOnly',
+                    title: '女性限定'
+                },
+                {
+                    field: 'foreignersAccept',
+                    title: '外国人可否'
+                },
+                {
+                    field: 'englishSupport',
+                    title: '英語'
+                },
+                {
+                    field: 'japaneseSupport',
+                    title: '日本語'
+                },
+                {
+                    field: 'chineseSupport',
+                    title: '中国語'
+                },
+                {
+                    field: 'vietnameseSupport',
+                    title: 'ベトナム語'
+                },
+                {
+                    field: 'koreanSupport',
+                    title: '韓国語'
+                },
+                {
+                    field: 'conditions',
+                    title: '他の条件'
+                },
+                {
+                    field: 'sortOrder',
+                    title: 'ソート順'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.sharehouseId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.sharehouseId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

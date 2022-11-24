@@ -1,0 +1,11 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-6 col-lg-5">
+		<div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+	            <th:block th:if="${G_PAGE_OBJECT.document} != null">
+	            	<th:block th:utext="${G_PAGE_OBJECT.document.siteDocContent}"></th:block>
+	            </th:block>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<!--- Sidemenu -->
+<div id="sidebar-menu" class="mm-active">
+	<!-- Left Menu Start -->
+	<ul class="metismenu list-unstyled mm-show" id="side-menu">
+		<!-- <li class="menu-title">Product &amp; Sales</li> -->
+		<li>
+			<a href="javascript: void(0);" class="has-arrow waves-effect">
+				<i class="uil-home-alt"></i> <span>オーナー</span>
+			</a>
+			<ul class="sub-menu mm-collapse" aria-expanded="false">
+				<li><a href="/agent/discover">空室管理</a></li>
+				<li><a href="/biz/sharehouse">マイハウス管理</a></li>
+			</ul>
+		</li>
+		<th:block th:if="${G_ROLES.contains('ROLE_ADMIN')}">
+			<li class="menu-title">USER</li>
+			<li><a href="/admin/user"> <i class="uil-users-alt"></i> <span>顧客</span>
+			</a></li>
+			<li><a href="/admin/user/create"> <i class="uil-users-alt"></i> <span>アカウント作成</span>
+			</a></li>
+		</th:block>
+		<th:block th:if="${G_ROLES.contains('ROLE_ADMIN')}">
+			<li class="menu-title">System</li>
+			<li><a href="javascript: void(0);"
+				class="has-arrow waves-effect"> <i class="uil-envelopes"></i> <span>Broadcast</span>
+			</a>
+				<ul class="sub-menu mm-collapse" aria-expanded="false">
+					<li><a href="/admin/online/batch/mail">Batch mails</a></li>
+				</ul></li>
+			<li><a href="javascript: void(0);"
+				class="has-arrow waves-effect"> <i class="uil-cog"></i> <span>System</span>
+			</a>
+				<ul class="sub-menu mm-collapse" aria-expanded="false">
+					<li><a href="/admin/site/news">News</a></li>
+					<li><a href="/admin/site/docs">Document</a></li>
+					<li><a href="/admin/site/faq">FAQ</a></li>
+					<li><a href="/admin/mail/templates">Template(Mail)</a></li>
+					<li><a href="/admin/transcations">Transcations</a></li>
+					<li><a href="/admin/block">Html Blocks</a></li>
+					<li><a href="/admin/site/i18n">I18N</a></li>
+					<li><a href="/admin/site/setting">Attribute</a></li>
+					<li><a href="/admin/resources">GStorage</a></li>
+				</ul></li>
+			<li><a href="javascript: void(0);"
+				class="has-arrow waves-effect"> <i class="uil-bug"></i> <span>Debugger</span>
+			</a>
+				<ul class="sub-menu mm-collapse" aria-expanded="false">
+					<li><a href="/admin/debugger/html">HTML</a></li>
+				</ul></li>
+		</th:block>
+	</ul>
+
+</div>
+<!-- Sidebar -->

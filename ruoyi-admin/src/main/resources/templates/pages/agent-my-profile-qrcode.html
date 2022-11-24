@@ -1,0 +1,50 @@
+<div class="row justify-content-md-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header d-flex">
+                <a th:href="@{/user/agent/my/profile(agentId=${G_PAGE_OBJECT.agent.userId})}">
+                    <i class="text-muted mr-auto fas fa-chevron-left"></i>
+                    <span class="ml-2 text-muted">マイページ</span>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="border-bottom pb-4 mb-4">
+                    <img class="w-100" th:if="${G_PAGE_OBJECT.userSocial} != null" th:src="${G_PAGE_OBJECT.userSocial.wechatQrCode}">
+                    <form action="/user/agent/my/profile/qrcode/wechat/upload" method="POST" enctype="multipart/form-data">
+                        <th:block th:if="${_csrf} != null">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                            <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+                        </th:block>
+                        <th:block th:if="${_csrf} == null">
+                            <input type="hidden" name="_csrf" value="_csrf"/>
+                            <input type="hidden" name="_csrf_header" value="_csrf_header"/>
+                        </th:block>
+                        <div class="form-group mt-2">
+                            <label for="wechatQRCode">WechatのQRCodeを変更</label>
+                            <input type="file" class="form-control-file" id="wechatQRCode" name="file" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary shadow-sm">アップロード</button>
+                    </form>
+                </div>
+                <div class="">
+                    <img class="w-100" th:if="${G_PAGE_OBJECT.userSocial} != null" th:src="${G_PAGE_OBJECT.userSocial.lineQrCode}">
+                    <form action="/user/agent/my/profile/qrcode/line/upload" method="POST" enctype="multipart/form-data">
+                        <th:block th:if="${_csrf} != null">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                            <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+                        </th:block>
+                        <th:block th:if="${_csrf} == null">
+                            <input type="hidden" name="_csrf" value="_csrf"/>
+                            <input type="hidden" name="_csrf_header" value="_csrf_header"/>
+                        </th:block>
+                        <div class="form-group mt-2">
+                            <label for="wechatQRCode">LineのQRCodeを変更</label>
+                            <input type="file" class="form-control-file" id="lineQRCode" name="file" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary shadow-sm">アップロード</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

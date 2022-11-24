@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jphome.system.mapper.EmployeeMapper">
+    
+    <resultMap type="Employee" id="EmployeeResult">
+        <result property="id"    column="id"    />
+        <result property="lastName"    column="lastName"    />
+        <result property="email"    column="email"    />
+        <result property="gender"    column="gender"    />
+        <result property="dId"    column="d_id"    />
+        <result property="birthday"    column="birthday"    />
+    </resultMap>
+
+    <sql id="selectEmployeeVo">
+        select id, lastName, email, gender, d_id, birthday from employee
+    </sql>
+
+    <select id="selectEmployeeList" parameterType="Employee" resultMap="EmployeeResult">
+        <include refid="selectEmployeeVo"/>
+        <where>  
+            <if test="lastName != null  and lastName != ''"> and lastName like concat('%', #{lastName}, '%')</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="dId != null "> and d_id = #{dId}</if>
+            <if test="birthday != null "> and birthday = #{birthday}</if>
+        </where>
+    </select>
+    
+    <select id="selectEmployeeById" parameterType="Long" resultMap="EmployeeResult">
+        <include refid="selectEmployeeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertEmployee" parameterType="Employee" useGeneratedKeys="true" keyProperty="id">
+        insert into employee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lastName != null">lastName,</if>
+            <if test="email != null">email,</if>
+            <if test="gender != null">gender,</if>
+            <if test="dId != null">d_id,</if>
+            <if test="birthday != null">birthday,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lastName != null">#{lastName},</if>
+            <if test="email != null">#{email},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="dId != null">#{dId},</if>
+            <if test="birthday != null">#{birthday},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEmployee" parameterType="Employee">
+        update employee
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lastName != null">lastName = #{lastName},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="dId != null">d_id = #{dId},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEmployeeById" parameterType="Long">
+        delete from employee where id = #{id}
+    </delete>
+
+    <delete id="deleteEmployeeByIds" parameterType="String">
+        delete from employee where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

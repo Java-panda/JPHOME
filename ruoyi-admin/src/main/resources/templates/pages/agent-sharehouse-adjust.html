@@ -1,0 +1,47 @@
+<style>
+.media-cell {
+  width: 100%;
+  padding-top: 161.8%;
+  background-color:white;
+  position: relative;
+  border: solid 1px #f5f6f8;
+}
+.media-cell-headline {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: #2125297a;
+  color: white;
+}
+.media-cell-tophead {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  padding: 10px;
+}
+</style>
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body text-center">
+        <p class="text-muted small mb-3">すべての詳細編集なら以下のボタンをクリック</p>
+        <a class="btn btn-sm btn-primary shadow-sm" href="/biz/sharehouse">PRO版へ</a>
+    </div>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="row no-gutters">
+            <div class="col-6" th:each="item : ${G_PAGE_OBJECT.sharehouseViewList}">
+                <div class="media-cell image-bg position-relative" th:style="'background-image:url(' + ${UString.splitAndGetTopOne(item.sharehouseImage, ',')} + ')'">
+                    <div class="media-cell-tophead">
+                        <span class="badge badge-primary" th:text="${item.emptyRoomCnt + item.emptyPlanRoomCnt + '/' +item.totalRoomCnt}">8/8</span>
+                    </div>
+                    <div class="media-cell-headline">
+                        <span class="d-inline-block text-truncate" th:text="${item.sharehouseName}">水道橋シェアハウス</span>
+                    </div>
+                    <a class="stretched-link" th:href="@{/agent/house/detail(agentId=${item.userId},sharehouseId=${item.sharehouseId})}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="parts/front-tabbar"></th:block>
